@@ -1,7 +1,8 @@
 import cv2
 import time
+import requests
 
-# count = 0
+count = 0
 
 x_begin = 20
 y_begin = 200
@@ -55,9 +56,16 @@ while cap.isOpened():
         cv2.line(frame1, (int(((x + w)-x)/2+x), int(((y + h)-y)/2+y)), (int(((x + w)-x)/2+x), int(((y + h)-y)/2+y)), (0, 0, 255), 18)
 
         if int(((y + h)-y)/2+y) > y_begin - 10 and int(((y + h)-y)/2+y) < y_begin + 10:
-            # count += 1
-            time.sleep(5)
-            # print(count)
+            count += 1
+            if count % 2 != 0:
+                print("Вошел")
+                requests.get('http://localhost:9009/enter')
+            else:
+                print("Вышел")
+                requests.get('http://localhost:9009/exit')
+                count = 0
+            time.sleep(3)
+            print(count)
 
         # print("Обнаружено движение объекта !!!")
         # print(x)
